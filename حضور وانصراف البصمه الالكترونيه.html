@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>تقرير البصمة والحضور</title>
+<style>
+:root{--bg:#f4f7f5;--card:#fff;--tx:#17231c;--mut:#5d6b63;--pr:#1f5f3a;--pr2:#e4f1e9;--bd:#d9e2dc;--bad:#b3261e;--bad2:#fde8e6;--warn:#8a5a00;--warn2:#fff3d6;--gray2:#eceff1;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1713;--card:#17221c;--tx:#e8f0ea;--mut:#9fb0a5;--pr:#5fc088;--pr2:#1d3326;--bd:#2a3b31;--bad:#ff8a80;--bad2:#3a1f1d;--warn:#e3b341;--warn2:#3a2f12;--gray2:#242d28;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0f1713;--card:#17221c;--tx:#e8f0ea;--mut:#9fb0a5;--pr:#5fc088;--pr2:#1d3326;--bd:#2a3b31;--bad:#ff8a80;--bad2:#3a1f1d;--warn:#e3b341;--warn2:#3a2f12;--gray2:#242d28;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:Tahoma,Arial,sans-serif;font-size:15px;line-height:1.6}
+.w{max-width:960px;margin:0 auto;padding:16px}
+h1{font-size:20px;margin:6px 0 2px}h2{font-size:16px;margin:0 0 10px;color:var(--pr)}
+.sub{color:var(--mut);font-size:13px;margin-bottom:14px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:14px;margin-bottom:14px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end}
+label{display:flex;flex-direction:column;font-size:12px;color:var(--mut);gap:3px;flex:1;min-width:110px}
+input,select{font:inherit;padding:8px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);color:var(--tx);width:100%}
+button{font:inherit;padding:9px 16px;border:0;border-radius:8px;background:var(--pr);color:var(--card);cursor:pointer;font-weight:bold}
+button.g{background:var(--gray2);color:var(--tx)}
+.chip{display:inline-flex;gap:6px;align-items:center;background:var(--pr2);border-radius:20px;padding:4px 12px;margin:4px 0 0 6px;font-size:13px}
+.chip b{cursor:pointer;color:var(--bad)}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{padding:6px 8px;border-bottom:1px solid var(--bd);text-align:center;white-space:nowrap}
+th{background:var(--pr2);color:var(--pr)}
+.b{display:inline-block;padding:1px 8px;border-radius:10px;font-size:12px}
+.bad{background:var(--bad2);color:var(--bad)}.warn{background:var(--warn2);color:var(--warn)}.gray{background:var(--gray2);color:var(--mut)}
+details{border:1px solid var(--bd);border-radius:10px;margin-bottom:10px;background:var(--card)}
+summary{padding:10px 12px;cursor:pointer;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center}
+summary .n{font-weight:bold;flex:1 1 150px}
+.st{font-size:12.5px;color:var(--mut)}.st b{color:var(--tx)}
+.dz{border:2px dashed var(--bd);border-radius:12px;padding:20px;text-align:center;color:var(--mut)}
+.msg{color:var(--bad);font-size:13px;margin-top:8px}
+.tpb{background:var(--bg);color:var(--tx);border:1px solid var(--bd);padding:8px;width:100%;text-align:right;font-weight:normal}
+#tpo{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;z-index:50}
+#tpo.on{display:flex}
+#tp{background:#1f7a45;color:#fff;border-radius:16px;padding:14px;width:min(320px,92vw)}
+.tpc{position:relative;display:flex;direction:ltr;gap:6px;height:200px}
+.tpl{flex:1;overflow-y:scroll;scroll-snap-type:y mandatory;padding:80px 0;scrollbar-width:none;text-align:center}
+.tpl::-webkit-scrollbar{display:none}
+.tpl div{height:40px;line-height:40px;scroll-snap-align:center;font-size:20px;opacity:.5}
+.tpl div.sel{opacity:1;font-weight:bold;font-size:24px}
+.tpband{position:absolute;left:0;right:0;top:80px;height:40px;background:rgba(255,255,255,.22);border-radius:10px;pointer-events:none}
+.tpa{display:flex;gap:8px;margin-top:12px}
+.tpa button{flex:1;background:#fff;color:#1f5f3a}
+.tpa button.g{background:rgba(255,255,255,.2);color:#fff}
+.dy{background:var(--gray2);color:var(--tx);padding:7px 12px;font-weight:normal}
+.dy.on{background:var(--pr);color:var(--card);font-weight:bold}
+.pz{padding:5px 12px;font-size:13px}
+tr.rb td{background:var(--bad2);color:var(--bad)}
+details.pb{border-color:var(--bad)}
+@media print{.noprint{display:none}details{break-inside:avoid}}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body><div class="w">
+<h1>تقرير البصمة والحضور</h1>
+<div class="sub">ارفع ملف البصمة الخام (.xls) وهيطلع لكل موظف ساعات الحضور ومن كام لكام. ولو ضفت شيفته هيحسب التأخير والانصراف المبكر.</div>
+
+<div class="card noprint">
+<h2>١) الورديات (اختياري)</h2>
+<div class="row">
+<label>الاسم<input id="sn" placeholder="اسم الموظف"></label>
+<label>ID<input id="si" inputmode="numeric" placeholder="رقم البصمة"></label>
+<label>الوظيفة<select id="sr"><option>موظف</option><option>طبيب</option></select></label>
+<label>ساعة الحضور<button type="button" id="ss" class="tpb" data-v="09:00"></button></label>
+<label>ساعة الانصراف<button type="button" id="se" class="tpb" data-v="17:00"></button></label>
+<button id="add">إضافة</button>
+</div>
+<div class="sub" style="margin:10px 0 4px">أيام الشفت</div>
+<div id="days" class="row" style="gap:6px"></div>
+<div class="row" style="margin-top:8px;gap:6px"><button type="button" class="g pz" data-p="all">كل يوم</button><button type="button" class="g pz" data-p="A">أحد · ثلاثاء · خميس</button><button type="button" class="g pz" data-p="B">سبت · اثنين · أربعاء</button></div>
+<div id="list" style="margin-top:8px"></div>
+<div class="row" style="margin-top:12px">
+<label>سماح التأخير (دقيقة)<input id="grace" type="number" min="0" value="0"></label>
+<label>أقصى فجوة بين بصمتين لاعتبارهم نفس الحضور (ساعة)<input id="gap" type="number" min="1" value="12"></label>
+</div>
+<div class="sub" style="margin:8px 0 0">لو الوردية مسائية وتخلص تاني يوم، اكتب الانصراف أصغر من الحضور (مثلاً 22:00 إلى 09:00) وهيتحسب صح.</div>
+</div>
+
+<div class="card noprint">
+<h2>٢) ملف البصمة</h2>
+<label class="dz"><input id="file" type="file" accept=".xls,.xlsx" style="display:none">اضغط هنا لاختيار الملف (30_StandardReport...xls)</label>
+<div id="msg" class="msg"></div>
+</div>
+
+<div id="out"></div>
+<div id="tpo"><div id="tp"><div class="tpc"><div class="tpband"></div><div class="tpl" id="tph"></div><div class="tpl" id="tpm"></div><div class="tpl" id="tpp"></div></div><div class="tpa"><button id="tpok">تم</button><button class="g" id="tpx">إلغاء</button></div></div></div>
+</div>
+<script>
+const $=s=>document.querySelector(s);
+let shifts=[];try{shifts=JSON.parse(localStorage.getItem('shifts')||'[]')}catch(e){}
+const save=()=>{try{localStorage.setItem('shifts',JSON.stringify(shifts))}catch(e){}};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const tm=s=>{const m=/^(\d{1,2}):(\d{2})/.exec(s);return m?+m[1]*60+ +m[2]:null};
+const pad=n=>String(n).padStart(2,'0');
+const fmt=m=>{m=((Math.round(m)%1440)+1440)%1440;const h=Math.floor(m/60);return pad(h%12||12)+':'+pad(m%60)+' '+(h<12?'ص':'م')};
+const dur=m=>Math.floor(m/60)+':'+pad(Math.round(m%60));
+const key=id=>String(parseInt(id,10));
+let RAW=null;
+const DN={6:'سبت',0:'أحد',1:'اثنين',2:'ثلاثاء',3:'أربعاء',4:'خميس',5:'جمعة'};
+const ORD=[6,0,1,2,3,4,5];
+const dayTxt=s=>{const d=s.days||ORD;return d.length===7?'كل يوم':ORD.filter(x=>d.includes(x)).map(x=>DN[x]).join(' · ')};
+const dayOk=(sh,d)=>{if(!sh.days||!RAW||!RAW.ym)return true;return sh.days.includes(new Date(RAW.ym[0],RAW.ym[1]-1,d).getDay())};
+
+function renderShifts(){
+  $('#list').innerHTML=shifts.map((s,i)=>`<span class="chip">${esc(s.name||'-')} · ${esc(s.id)} · ${s.role||'موظف'} · ${fmt(s.st)} → ${fmt(s.en)} · ${dayTxt(s)} <b data-i="${i}">✕</b></span>`).join('');
+  $('#list').querySelectorAll('b').forEach(b=>b.onclick=()=>{shifts.splice(+b.dataset.i,1);save();renderShifts();run()});
+}
+$('#add').onclick=()=>{
+  const id=$('#si').value.trim(),st=tm($('#ss').dataset.v),en=tm($('#se').dataset.v);
+  if(!id||isNaN(parseInt(id,10))||st==null||en==null){alert('اكتب الـ ID وساعة الحضور والانصراف');return}
+  if(!selD.size){alert('اختار يوم واحد على الأقل');return}
+  shifts=shifts.filter(s=>key(s.id)!==key(id));
+  shifts.push({id:key(id),name:$('#sn').value.trim(),st,en,role:$('#sr').value,days:[...selD]});save();renderShifts();
+  $('#sn').value='';$('#si').value='';run();
+};
+['grace','gap'].forEach(i=>$('#'+i).onchange=run);
+
+function parse(rows){
+  let ym=null;
+  for(const r of rows.slice(0,8)){for(const c of r){const m=/(\d{4})-(\d{2})-\d{2}/.exec(String(c));if(m){ym=[+m[1],+m[2]];break}}if(ym)break}
+  const emps=[];
+  for(let i=0;i<rows.length;i++){
+    const r=rows[i].map(x=>String(x).trim());const k=r.indexOf('ID:');if(k<0)continue;
+    const id=r.slice(k+1).find(x=>x!=='');
+    const ni=r.indexOf('Name:');let nm=ni>=0?(r.slice(ni+1).find(x=>x!==''&&x!=='Dept.:')||''):'';
+    if(nm==='0')nm='';
+    const nr=rows[i+1]||[];const pts=[];
+    if(!nr.some(c=>String(c).trim()==='ID:')){
+      for(let c=0;c<31;c++){const t=String(nr[c]??'');for(const m of t.matchAll(/\d{2}:\d{2}/g))pts.push(c*1440+tm(m[0]))}
+    }
+    emps.push({id:key(id),name:nm,pts});
+  }
+  return {ym,emps};
+}
+function sessions(p,gap){
+  p=[...p].sort((a,b)=>a-b);const out=[];
+  for(const t of p){const s=out[out.length-1];
+    if(s&&t-s.l<=gap*60){if(t-s.l>=5)s.l=t}else out.push({f:t,l:t})}
+  return out;
+}
+function analyze(e,gap,grace){
+  const sh=shifts.find(s=>s.id===e.id);
+  const ss=sessions(e.pts,gap).map(s=>{
+    const ok=s.l>s.f;const r={f:s.f,l:s.l,ok,hrs:ok?(s.l-s.f)/60:0,late:0,early:0,ot:0,out:false};
+    if(sh){
+      const d=Math.floor(s.f/1440);let best=null;
+      for(const c of [d-1,d,d+1]){const a=c*1440+sh.st;if(best==null||Math.abs(s.f-a)<Math.abs(s.f-best))best=a}
+      const dev=s.f-best;
+      if(Math.abs(dev)>360)r.out=true;
+      else{
+        r.sd=Math.floor(best/1440)+1;if(!dayOk(sh,r.sd))r.extra=true;if(dev>grace)r.late=dev;
+        const D=((sh.en-sh.st)%1440+1440)%1440||1440;const endA=best+D;
+        if(ok){if(s.l<endA)r.early=endA-s.l;else r.ot=s.l-endA}
+      }
+    }
+    return r;
+  });
+  ss.forEach(s=>{if(s.extra){s.late=s.early=s.ot=0}});
+  const absent=[];
+  if(sh&&sh.days&&RAW.ym){const nd=new Date(RAW.ym[0],RAW.ym[1],0).getDate();const cov=new Set(ss.filter(s=>s.sd&&!s.extra).map(s=>s.sd));
+    for(let d=1;d<=nd;d++)if(dayOk(sh,d)&&!cov.has(d))absent.push(d)}
+  const ssAll=[...ss,...absent.map(d=>({f:(d-1)*1440+sh.st,l:0,ok:false,abs:true,hrs:0,late:0,early:0,ot:0,out:false}))].sort((a,b)=>a.f-b.f);
+  const full=ss.filter(s=>s.ok);
+  const avg=a=>a.length?((a.reduce((x,y)=>x+((y%1440)+720)%1440,0)/a.length)-720):null;
+  return {e,sh,ss:ssAll,absent,days:full.length,single:ss.length-full.length,hrs:full.reduce((a,s)=>a+s.hrs,0),
+    ain:avg(full.map(s=>s.f)),aout:avg(full.map(s=>s.l)),
+    late:ss.filter(s=>s.late).length,lateM:ss.reduce((a,s)=>a+s.late,0),earlyM:ss.reduce((a,s)=>a+s.early,0),otM:ss.reduce((a,s)=>a+s.ot,0)};
+}
+function run(){
+  if(!RAW){return}
+  const gap=+$('#gap').value||12,grace=+$('#grace').value||0;
+  const [y,mo]=RAW.ym||[0,0];
+  const res=RAW.emps.map(e=>analyze(e,gap,grace)).filter(r=>r.ss.length||r.sh);
+  if(!res.length){$('#out').innerHTML='<div class="card">مفيش أي بصمات في الملف.</div>';return}
+  const tot=res.reduce((a,r)=>a+r.hrs,0);
+  let h=`<div class="card"><h2>ملخص الشهر ${RAW.ym?pad(mo)+'/'+y:''}</h2><div class="st">موظفين بصمتهم موجودة: <b>${res.length}</b> · إجمالي الساعات: <b>${dur(tot*60)}</b> <button class="g noprint" style="margin-right:10px;padding:4px 12px" onclick="window.print()">طباعة</button><button class="noprint" style="margin-right:6px;padding:4px 12px" onclick="exportXlsx()">تصدير Excel</button></div></div>`;
+  res.sort((a,b)=>(+a.e.id)-(+b.e.id));LAST={res,mo,y};
+  for(const r of res){
+    const nm=r.sh&&r.sh.name?r.sh.name:(r.e.name||'(بدون اسم)');
+    const prob=r.absent.length||r.late||r.earlyM||r.single;
+    h+=`<details class="${prob?'pb':''}"><summary><span class="n">${esc(nm)} <span class="st">#${esc(r.e.id)}${r.sh?' · '+(r.sh.role||'موظف'):''}</span></span>
+    <span class="st">حضور <b>${r.days}</b> يوم</span><span class="st">ساعات <b>${dur(r.hrs*60)}</b></span>
+    <span class="st">المعتاد <b>${r.ain==null?'-':fmt(r.ain)+' → '+fmt(r.aout)}</b></span>
+    ${r.sh?`<span class="st">الوردية <b>${fmt(r.sh.st)}→${fmt(r.sh.en)}</b></span><span class="b ${r.late?'bad':'gray'}">تأخير ${r.late} مرة / ${dur(r.lateM)} س</span><span class="b ${r.absent.length?'bad':'gray'}">غياب ${r.absent.length}</span>`:''}</summary>
+    <div class="tbl"><table><tr><th>اليوم</th><th>من</th><th>إلى</th><th>الساعات</th>${r.sh?'<th>التأخير</th><th>انصراف مبكر</th>':''}<th>الحالة</th></tr>`;
+    for(const s of r.ss){
+      const d=Math.floor(s.f/1440)+1,nx=Math.floor(s.l/1440)>Math.floor(s.f/1440);
+      let st='<span class="b gray">ملهاش</span>';
+      if(s.abs)st='<span class="b bad">غياب</span>';else if(!s.ok)st='<span class="b bad">بصمة واحدة</span>';else if(s.extra)st='<span class="b warn">يوم إضافي</span>';
+      else if(s.out)st='<span class="b gray">خارج الوردية</span>';
+      else if(r.sh)st=s.late?'<span class="b bad">متأخر</span>':(s.early?'<span class="b bad">انصراف مبكر</span>':'<span class="b" style="background:var(--pr2);color:var(--pr)">منتظم</span>');
+      else st='';
+      h+=`<tr class="${(!s.ok||s.late||s.early)?'rb':''}"><td>${d}/${mo||''}</td><td>${s.abs?'-':fmt(s.f)}</td><td>${s.ok?fmt(s.l)+(nx?' <span class="st">(+1)</span>':''):'-'}</td><td>${s.ok?dur(s.hrs*60):'-'}</td>${r.sh?`<td>${s.late?s.late+' د':'-'}</td><td>${s.early?s.early+' د':'-'}</td>`:''}<td>${st}</td></tr>`;
+    }
+    h+=`</table></div>${r.sh?`<div class="st" style="padding:8px 12px">إجمالي التأخير: <b>${dur(r.lateM)} س</b> · الانصراف المبكر: <b>${dur(r.earlyM)} س</b> · وقت إضافي: <b>${dur(r.otM)} س</b></div>`:''}</details>`;
+  }
+  $('#out').innerHTML=h;
+}
+const tpo=$('#tpo');let tpT=null;
+const fmt12=v=>{const[h,m]=v.split(':').map(Number);return pad(h%12||12)+':'+pad(m)+' '+(h<12?'ص':'م')};
+function setTP(el,v){el.dataset.v=v;el.textContent=fmt12(v)}
+const fill=(id,a)=>{$('#'+id).innerHTML=a.map(x=>`<div>${x}</div>`).join('')};
+fill('tph',Array.from({length:12},(_,i)=>pad(i+1)));
+fill('tpm',Array.from({length:60},(_,i)=>pad(i)));
+fill('tpp',['ص','م']);
+const cols=['tph','tpm','tpp'].map(i=>$('#'+i));
+const mark=c=>{const i=Math.round(c.scrollTop/40);[...c.children].forEach((d,k)=>d.classList.toggle('sel',k===i))};
+cols.forEach(c=>c.addEventListener('scroll',()=>mark(c)));
+function openTP(el){tpT=el;const[h,m]=el.dataset.v.split(':').map(Number);tpo.classList.add('on');
+  [(h%12||12)-1,m,h<12?0:1].forEach((v,k)=>{cols[k].scrollTop=v*40;mark(cols[k])})}
+function pickTP(){const[a,b,p]=cols.map(c=>Math.round(c.scrollTop/40));setTP(tpT,pad((a+1)%12+(p?12:0))+':'+pad(b));tpo.classList.remove('on')}
+document.querySelectorAll('.tpb').forEach(b=>{setTP(b,b.dataset.v);b.onclick=()=>openTP(b)});
+$('#tpok').onclick=pickTP;$('#tpx').onclick=()=>tpo.classList.remove('on');
+tpo.onclick=e=>{if(e.target===tpo)tpo.classList.remove('on')};
+let selD=new Set(ORD);
+function drawDays(){
+  $('#days').innerHTML=ORD.map(d=>`<button type="button" class="dy ${selD.has(d)?'on':''}" data-d="${d}">${DN[d]}</button>`).join('');
+  $('#days').querySelectorAll('button').forEach(b=>b.onclick=()=>{const d=+b.dataset.d;selD.has(d)?selD.delete(d):selD.add(d);drawDays()});
+}
+const PZ={all:ORD,A:[0,2,4],B:[6,1,3]};
+document.querySelectorAll('.pz').forEach(b=>b.onclick=()=>{selD=new Set(PZ[b.dataset.p]);drawDays()});
+drawDays();
+let LAST=null;
+async function exportXlsx(){
+  if(!LAST)return;
+  const {res,mo,y}=LAST;
+  const S=[['ID','الاسم','أيام الحضور','بصمة واحدة فقط','إجمالي الساعات','الساعات (س:د)','متوسط الحضور','متوسط الانصراف','بداية الوردية','نهاية الوردية','مرات التأخير','دقائق التأخير','دقائق الانصراف المبكر','دقائق إضافية','الوظيفة','أيام الشفت','أيام الغياب']];
+  const D=[['ID','الاسم','اليوم','الحضور','الانصراف','الساعات','دقائق التأخير','دقائق الانصراف المبكر','دقائق إضافية','الحالة']];
+  for(const r of res){
+    const nm=r.sh&&r.sh.name?r.sh.name:(r.e.name||'');
+    S.push([+r.e.id,nm,r.days,r.single,+r.hrs.toFixed(2),dur(r.hrs*60),r.ain==null?'':fmt(r.ain),r.aout==null?'':fmt(r.aout),r.sh?fmt(r.sh.st):'',r.sh?fmt(r.sh.en):'',r.late,r.lateM,r.earlyM,r.otM,r.sh?(r.sh.role||'موظف'):'',r.sh?dayTxt(r.sh):'',r.absent.length]);
+    for(const s of r.ss){
+      let st='';
+      if(s.abs)st='غياب';else if(!s.ok)st='بصمة واحدة';else if(s.extra)st='يوم إضافي';else if(s.out)st='خارج الوردية';else if(r.sh)st=s.late?'متأخر':(s.early?'انصراف مبكر':'منتظم');
+      D.push([+r.e.id,nm,(Math.floor(s.f/1440)+1)+'/'+(mo||''),s.abs?'':fmt(s.f),s.ok?fmt(s.l):'',s.ok?+s.hrs.toFixed(2):'',s.late||0,s.early||0,s.ot||0,st]);
+    }
+  }
+  const wb=XLSX.utils.book_new();
+  const w1=XLSX.utils.aoa_to_sheet(S),w2=XLSX.utils.aoa_to_sheet(D);
+  w1['!cols']=[6,22,11,13,13,13,13,13,13,13,12,12,16,13,10,22,12].map(wch=>({wch}));
+  w2['!cols']=[6,22,10,10,10,10,12,16,12,14].map(wch=>({wch}));
+  XLSX.utils.book_append_sheet(wb,w1,'ملخص الموظفين');
+  XLSX.utils.book_append_sheet(wb,w2,'التفاصيل اليومية');
+  wb.Workbook={Views:[{RTL:true}]};
+  const fn='attendance_'+(y?y+'-'+pad(mo):'report')+'.xlsx';
+  try{
+    const d=typeof claude!=='undefined'?await claude.use('downloads'):null;
+    if(d){await d.save({filename:fn,data:XLSX.write(wb,{type:'array',bookType:'xlsx'})});return}
+  }catch(e){if(e&&e.code==='declined')return}
+  try{XLSX.writeFile(wb,fn)}catch(e){alert('تعذر التصدير')}
+}
+$('#file').onchange=async e=>{
+  const f=e.target.files[0];if(!f)return;$('#msg').textContent='';
+  try{
+    const wb=XLSX.read(await f.arrayBuffer(),{type:'array'});
+    const nm=wb.SheetNames.find(n=>/log/i.test(n))||wb.SheetNames[2]||wb.SheetNames[0];
+    const rows=XLSX.utils.sheet_to_json(wb.Sheets[nm],{header:1,raw:false,defval:''});
+    RAW=parse(rows);
+    if(!RAW.emps.length)throw new Error('مش لاقي شيت Att.log report في الملف');
+    run();
+  }catch(err){$('#msg').textContent='تعذر قراءة الملف: '+err.message}
+};
+renderShifts();
+</script>
+</body></html>
